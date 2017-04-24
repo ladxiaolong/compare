@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>index</title>
+    <style>
+        #div1 {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 6px;
+            background: grey;
+        }
+    </style>
+</head>
+<body>
+    <div id="div1"></div>
+
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script> -->
+    <script src="scripts/jquery-3.1.1.js"></script>
+    <script>
+        ~function (colors, dir='left-top') {
+            var $div1 = $('#div1');
+            var oldIdx = -1,
+                len = colors.length,
+                dirs = dir.split('-'),
+                stepX = 4,
+                stepY = 4,
+                colFlagX = false,
+                colFlagY = false,
+                wdWidth = $(window).width(),
+                wdHeight = $(window).height();
+
+            // 随机颜色
+            setInterval(function() {
+                // 随机颜色
+                var idx = function(n) {
+                    var index;
+                    do {
+                        index = Math.floor(Math.random() * n);
+                    } while (index == oldIdx)
+                    return index;
+                }(len, oldIdx);
+                $div1.css('background-color', colors[idx]);
+                oldIdx = idx;
+            }, 800);
+
+            // 移动
+            setInterval(function() {
+                var h = parseInt($div1.css(dirs[0])),
+                    v = parseInt($div1.css(dirs[1]));
+                $div1.css({
+                    [dirs[0]]: function() {
+                        if (h >= wdWidth - 100
+                        || h <= 0) colFlagX = !colFlagX;
+
+                        return colFlagX ? '-='+stepX : '+='+stepX;
+                    },
+                    [dirs[1]]: function() {
+                        if (v >= wdHeight - 100
+                        || v <= 0) colFlagY = !colFlagY;
+
+                        return colFlagY ? '-='+stepY : '+='+stepY;
+                    }
+                });
+            }, 20);
+
+        }(['pink',
+           'blue',
+           'orange',
+           'yellow',
+           'plum',
+           'black',
+       ], 'right-bottom');
+    </script>
+</body>
+</html>
